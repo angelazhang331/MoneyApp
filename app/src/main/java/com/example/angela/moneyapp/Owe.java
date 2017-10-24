@@ -15,6 +15,15 @@ public class Owe {
         this.description = description;
     }
 
+    public Owe(int amount, String date) {
+        this.amount = amount;
+        this.date = date;
+    }
+
+    public Owe(int amount) {
+        this.amount = amount;
+    }
+
     public int getAmount() {
         return amount;
     }

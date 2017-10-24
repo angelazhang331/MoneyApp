@@ -31,18 +31,16 @@ public class Person {
     }
 
     public void addOwe(String date, String description, int amount) {
-        //Owe initial = new Owe( , , );
+        Owe initial = new Owe(amount, date, description);
     }
 
-    public void addOwe(String description, int amount) {
-        //Owe initial = new Owe( , );
+    public void addOwe(String date, int amount) {
+        Owe initial = new Owe( amount, date);
     }
 
     public void addOwe(int amount) {
-        //Owe initial = new Owe();
+        Owe initial = new Owe(amount);
     }
-
-    //trying to fix something
 
 }
 
