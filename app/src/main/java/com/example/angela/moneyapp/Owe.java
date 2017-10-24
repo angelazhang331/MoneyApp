@@ -20,10 +20,6 @@ public class Owe {
         this.date = date;
     }
 
-    public Owe(int amount) {
-        this.amount = amount;
-    }
-
     public int getAmount() {
         return amount;
     }
