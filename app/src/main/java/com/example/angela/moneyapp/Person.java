@@ -1,12 +1,14 @@
 package com.example.angela.moneyapp;
 
+import android.support.annotation.NonNull;
+
 import java.util.ArrayList;
 
 /**
  * Created by Angela on 10/20/17.
  */
 
-public class Person {
+public class Person implements Comparable<Person>{
 
     //instance variables
     private String name;
@@ -47,6 +49,11 @@ public class Person {
     public void addOwe(String date, int amount) {
         Owe initial = new Owe( amount, date);
         oweList.add(initial);
+    }
+
+    @Override
+    public int compareTo(@NonNull Person person) {
+        return name.compareTo(person.name);
     }
 }
 
