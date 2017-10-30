@@ -38,7 +38,7 @@ public class PersonActivity extends AppCompatActivity {
 //                startActivity(i);
 //            }
 //        });
-
+//
 //        Intent get = getIntent();
 //        personName = get.getStringExtra(MainActivity.EXTRA_KEY);
 //        currentPerson = get.getParcelableExtra(MainActivity.EXTRA_KEY);

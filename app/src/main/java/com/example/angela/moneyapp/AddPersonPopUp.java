@@ -10,7 +10,7 @@ class AddPersonPopUp extends MainActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.pop_up_add_person);
+        setContentView(R.layout.activity_pop_up_add_person);
 
     }
 }
