@@ -1,10 +1,12 @@
 package com.example.angela.moneyapp;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,21 +18,36 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     //private ConstraintLayout background;
-    private ArrayList<Person> people;
+    private ArrayList<Person> peopleList;
     private ArrayAdapter<Person> peopleAdapter;
     private ListView peopleListView;
     private Button addPersonButton;
-    private AlertDialog.Builder addPersonBuilder;
-    private View addPersonView;
+    public static final String EXTRA_KEY = "key";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //test
 
+        peopleList = new ArrayList<Person>();
         wiringWidgets();
         setOnClickListeners();
+        adaptingArrays();
     }
+
+    private void adaptingArrays() {
+        peopleAdapter = new ArrayAdapter<Person>(this, R.layout.list_item_single_person, peopleList);
+        peopleListView.setAdapter(peopleAdapter);
+        peopleListView.setOnItemClickListener(new ListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
+                Intent send = new Intent(MainActivity.this, PersonActivity.class);
+                send.putExtra(EXTRA_KEY, peopleList.get(pos));
+                startActivity(send);
+            }
+        });
+
+    }
+
 
     private void setOnClickListeners() {
         addPersonButton.setOnClickListener(this);
@@ -45,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void addPerson() {
         AlertDialog.Builder addPersonBuilder = new AlertDialog.Builder(MainActivity.this);
-        View addPersonView = getLayoutInflater().inflate(R.layout.pop_up_add_person, null);
+        View addPersonView = getLayoutInflater().inflate(R.layout.activity_pop_up_add_person, null);
         final AlertDialog dialog = addPersonBuilder.create();
 
         //Wiring the dialog widgets
@@ -71,10 +88,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     String sDescription = etDescription.getText().toString();
 
                     //Second, convert our amount owed to a double
-                    double dAmountOwed = Double.parseDouble(sAmountOwed);
+                    int iAmountOwed = Integer.parseInt(sAmountOwed);
 
                     //Third, we'll create a new Person and add them to the arrayList of people
-                    people.add(new Person(sName, sDescription, sDate, dAmountOwed));
+                    //peopleList.add(new Person(sName, sDescription, sDate, iAmountOwed));
+                    peopleList.add(new Person(sName));
                     dialog.dismiss();
                 }
                 else {
@@ -97,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch(view.getId()){
-            case R.id.button_add_person:
+            case R.id.button_add_person: //TODO: we'll change this to the first slot on list view
                 addPerson();
                 break;
             default:

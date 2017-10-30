@@ -48,7 +48,7 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="Amount Owed"
-        android:inputType="numberDecimal"
+        android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_pop_up_add_name" />
