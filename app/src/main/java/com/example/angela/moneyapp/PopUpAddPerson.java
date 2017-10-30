@@ -6,7 +6,7 @@ import android.os.Bundle;
  * Created by per6 on 10/26/17.
  */
 
-class AddPersonPopUp extends MainActivity {
+class PopUpAddPerson extends MainActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
