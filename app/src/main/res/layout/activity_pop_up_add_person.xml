@@ -83,7 +83,7 @@
 
     <Button
         android:id="@+id/button_pop_up_add_person_submit"
-        android:layout_width="92dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
@@ -111,7 +111,7 @@
         android:text="CANCEL"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_pop_up_add_person_description"
         app:layout_constraintVertical_bias="0.0" />
