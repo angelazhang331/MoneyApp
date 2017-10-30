@@ -1,5 +1,6 @@
 package com.example.angela.moneyapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -38,12 +39,11 @@ public class PersonActivity extends AppCompatActivity {
 //                startActivity(i);
 //            }
 //        });
-//
-//        Intent get = getIntent();
-//        personName = get.getStringExtra(MainActivity.EXTRA_KEY);
-//        currentPerson = get.getParcelableExtra(MainActivity.EXTRA_KEY);
-//        oweList = currentPerson.getOweList();
 
+        Intent get = getIntent();
+        personName = get.getStringExtra(MainActivity.EXTRA_KEY);
+        currentPerson = get.getParcelableExtra(MainActivity.EXTRA_KEY);
+        oweList = currentPerson.getOweList();
         adaptArray();
 
     }
@@ -53,11 +53,7 @@ public class PersonActivity extends AppCompatActivity {
         oweListView.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
-                //TODO create a popup to pay
-//                Intent i = new Intent(MainActivity.this, PersonActivity.class);
-//                //get the object from the ArrayList and put it in the extra for the Intent
-//                i.putExtra(EXTRA_KEY, peopleList.get(pos));
-//                startActivity(i);
+                //TODO make the popup to add an Owe
             }
         });
     }
@@ -67,6 +63,3 @@ public class PersonActivity extends AppCompatActivity {
         oweListView = (ListView) findViewById(R.id.listView_owes);
     }
 }
-
-
-//TODO redo intents and adapters over the weekend
