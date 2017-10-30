@@ -8,8 +8,8 @@
     tools:context="com.example.angela.moneyapp.MainActivity">
 
     <ListView
-        android:id="@+id/listview_people"
-        android:layout_width="230dp"
+        android:id="@+id/listView_people"
+        android:layout_width="325dp"
         android:layout_height="325dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
@@ -24,15 +24,20 @@
 
     <Button
         android:id="@+id/button_add_person"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="add person"
+        android:background="@drawable/curvy_button"
+        android:backgroundTint="@color/colorAccent"
+        android:text="Add Person"
+        android:textAlignment="center"
+        android:textColor="@android:color/background_light"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listview_people" />
+        app:layout_constraintTop_toBottomOf="@+id/listView_people" />
 </android.support.constraint.ConstraintLayout>
