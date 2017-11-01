@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     //First, convert the EditText to String variables
                     if (sDescription != null) {
-                        if (sDate != null) {
+                        if (sDate == null) {
                             Toast.makeText(MainActivity.this, "Please enter a date", Toast.LENGTH_SHORT).show();
                         }
                         else {

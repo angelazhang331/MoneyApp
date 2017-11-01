@@ -2,7 +2,6 @@ package com.example.angela.moneyapp;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 
@@ -10,7 +9,7 @@ import java.util.ArrayList;
  * Created by Angela on 10/20/17.
  */
 
-public class Person implements Comparable<Person>, Parcelable {
+public class Person implements Parcelable {
 
     //instance variables
     private String name;
@@ -61,9 +60,11 @@ public class Person implements Comparable<Person>, Parcelable {
     }
 
     @Override
-    public int compareTo(@NonNull Person person) {
-        return name.compareTo(person.name);
+    public String toString() {
+        return name;
     }
+
+
 
     protected Person(Parcel in) {
         name = in.readString();
@@ -73,11 +74,7 @@ public class Person implements Comparable<Person>, Parcelable {
         } else {
             oweList = null;
         }
-    }
-
-    @Override
-    public String toString() {
-        return name;
+        amount = in.readInt();
     }
 
     @Override
@@ -94,6 +91,7 @@ public class Person implements Comparable<Person>, Parcelable {
             dest.writeByte((byte) (0x01));
             dest.writeList(oweList);
         }
+        dest.writeInt(amount);
     }
 
     @SuppressWarnings("unused")

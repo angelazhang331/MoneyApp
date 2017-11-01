@@ -1,12 +1,16 @@
 package com.example.angela.moneyapp;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by per6 on 10/24/17.
  */
 //change
-public class Owe {
+public class Owe implements Parcelable {
     private int amount;
-    private String date, description;
+    private String date;
+    private String description;
     private boolean isPaid;
 
     public Owe(int amount, String date, String description) {
@@ -51,4 +55,37 @@ public class Owe {
     public void setPaid(boolean paid) {
         isPaid = paid;
     }
+
+    protected Owe(Parcel in) {
+        amount = in.readInt();
+        date = in.readString();
+        description = in.readString();
+        isPaid = in.readByte() != 0x00;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(amount);
+        dest.writeString(date);
+        dest.writeString(description);
+        dest.writeByte((byte) (isPaid ? 0x01 : 0x00));
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Owe> CREATOR = new Parcelable.Creator<Owe>() {
+        @Override
+        public Owe createFromParcel(Parcel in) {
+            return new Owe(in);
+        }
+
+        @Override
+        public Owe[] newArray(int size) {
+            return new Owe[size];
+        }
+    };
 }
