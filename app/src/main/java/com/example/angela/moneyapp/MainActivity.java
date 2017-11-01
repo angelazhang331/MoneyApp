@@ -1,6 +1,5 @@
 package com.example.angela.moneyapp;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -81,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View view) {
                 if(!etName.getText().toString().isEmpty()){ //if the name field is NOT empty
-                    //First, convert the EditText to String variables
+
                     String sName = etName.getText().toString();
                     String sAmountOwed = etAmountOwed.getText().toString();
                     String sDate = etDate.getText().toString();
@@ -89,6 +88,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     //Second, convert our amount owed to a double
                     int iAmountOwed = Integer.parseInt(sAmountOwed);
+
+                    //First, convert the EditText to String variables
+                    if (!etDescription.getText().toString().isEmpty()) {
+                        if (etDate.getText().toString().isEmpty()) {
+                            Toast.makeText(MainActivity.this, "Please enter a date", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            peopleList.add(new Person(sName, sDescription, sDate, iAmountOwed));
+                        }
+                    }
+                    else {
+                        if(etDate.getText().toString().isEmpty()){
+                            peopleList.add(new Person(sName));
+                        }
+                        else {
+                            peopleList.add(new Person(sName, sDate, iAmountOwed));
+                        }
+                    }
+
 
                     //Third, we'll create a new Person and add them to the arrayList of people
                     //peopleList.add(new Person(sName, sDescription, sDate, iAmountOwed));
@@ -123,3 +141,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 }
+
+
+/*
+Ideas
+- Possibly make a fake Person object as the first item in the array list to use as an add Person button
+- Would have to identify the position and the difference between this and others when writing intents to change screens
+
+- To do only if there is extra time.
+ */

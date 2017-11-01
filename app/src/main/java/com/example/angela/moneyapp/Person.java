@@ -15,18 +15,21 @@ public class Person implements Comparable<Person>, Parcelable {
     //instance variables
     private String name;
     private ArrayList<Owe> oweList;
+    private int amount = 0;
 
     //constructors
     public Person(String name, String description, String date, int amount) {
         this.name = name;
         oweList = new ArrayList<>();
-        addOwe(date, description, amount);
+        this.amount = amount;
+        addOwe(date, description, this.amount);
     }
 
     public Person(String name, String date, int amount) {
         this.name = name;
         oweList = new ArrayList<>();
-        addOwe(date, amount);
+        this.amount = amount;
+        addOwe(date, this.amount);
     }
 
     public Person(String name) {
