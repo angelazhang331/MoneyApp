@@ -85,13 +85,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     String sAmountOwed = etAmountOwed.getText().toString();
                     String sDate = etDate.getText().toString();
                     String sDescription = etDescription.getText().toString();
+                    int iAmountOwed = 0;
 
-                    //Second, convert our amount owed to a double
-                    int iAmountOwed = Integer.parseInt(sAmountOwed);
-
+                    if (sAmountOwed != null) {
+                        //Second, convert our amount owed to a double
+                        iAmountOwed = Integer.parseInt(sAmountOwed);
+                    }
                     //First, convert the EditText to String variables
-                    if (!etDescription.getText().toString().isEmpty()) {
-                        if (etDate.getText().toString().isEmpty()) {
+                    if (sDescription != null) {
+                        if (sDate != null) {
                             Toast.makeText(MainActivity.this, "Please enter a date", Toast.LENGTH_SHORT).show();
                         }
                         else {
@@ -99,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     }
                     else {
-                        if(etDate.getText().toString().isEmpty()){
+                        if(sDate != null){
                             peopleList.add(new Person(sName));
                         }
                         else {
