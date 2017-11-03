@@ -2,6 +2,7 @@ package com.example.angela.moneyapp;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 
@@ -9,7 +10,7 @@ import java.util.ArrayList;
  * Created by Angela on 10/20/17.
  */
 
-public class Person implements Parcelable {
+public class Person implements Parcelable, Comparable<Person> {
 
     //instance variables
     private String name;
@@ -106,4 +107,9 @@ public class Person implements Parcelable {
             return new Person[size];
         }
     };
+
+    @Override
+    public int compareTo(@NonNull Person person) {
+        return name.compareTo(person.name);
+    }
 }
