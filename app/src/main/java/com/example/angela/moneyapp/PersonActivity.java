@@ -47,9 +47,9 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
 //        });
 
         Intent get = getIntent();
-        personName = get.getStringExtra(MainActivity.EXTRA_KEY);
-        nameTextView.setText(personName);
         currentPerson = get.getParcelableExtra(MainActivity.EXTRA_KEY);
+        personName = currentPerson.getName();
+        nameTextView.setText(personName);
         oweList = currentPerson.getOweList();
         adaptArray();
 
@@ -60,6 +60,7 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void adaptArray() {
+        oweAdapter = new ArrayAdapter<Owe>(this, R.layout.list_item_single_amount, oweList);
         oweListView.setAdapter(oweAdapter);
         oweListView.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
