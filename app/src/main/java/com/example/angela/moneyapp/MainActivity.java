@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void addPerson() {
         AlertDialog.Builder addPersonBuilder = new AlertDialog.Builder(MainActivity.this);
-        View addPersonView = getLayoutInflater().inflate(R.layout.activity_pop_up_add_person, null);
+        View addPersonView = getLayoutInflater().inflate(R.layout.pop_up_add_person, null);
         final AlertDialog dialog = addPersonBuilder.create();
 
         //Wiring the dialog widgets
