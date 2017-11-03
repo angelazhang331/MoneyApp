@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -81,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View view) {
                 if(!etName.getText().toString().isEmpty()){ //if the name field is NOT empty
 
+                    //First, convert the EditText to String variables
                     String sName = etName.getText().toString();
                     String sAmountOwed = etAmountOwed.getText().toString();
                     String sDate = etDate.getText().toString();
@@ -88,10 +90,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     int iAmountOwed = 0;
 
                     if (!sAmountOwed.equals("")) {
-                        //Second, convert our amount owed to a double
+                        //Second, convert our amount owed to an integer
                         iAmountOwed = Integer.parseInt(sAmountOwed);
                     }
-                    //First, convert the EditText to String variables
+                    
                     if (!sDescription.equals("")) {
                         if (sDate.equals("")) {
                             Toast.makeText(MainActivity.this, "Please enter a date", Toast.LENGTH_SHORT).show();
@@ -109,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     }
                     dialog.dismiss();
+                    sortByName();
                 }
                 else {
                     Toast.makeText(MainActivity.this, "Please fill in the name field", Toast.LENGTH_SHORT).show();
@@ -136,6 +139,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             default:
                 break;
         }
+    }
+
+    private void sortByName(){
+        Collections.sort(peopleList);
+        peopleAdapter.notifyDataSetChanged();
+    }
+
+    private void sortByOweAmount(){
+
     }
 }
 
