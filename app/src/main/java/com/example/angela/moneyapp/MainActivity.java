@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        //get set from the shared preferences to check if the array has been previously set
 //
 //        //Commenting out just in case there are errors
-        //TODO put variable set into the shared preferences and get array to save.
+        //TODO put variable set into the shared preferences and get array to save..
 
 //        if (!set) {
 //            peopleList = new ArrayList<>();
