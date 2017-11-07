@@ -1,6 +1,7 @@
 package com.example.angela.moneyapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -22,13 +26,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayAdapter<Person> peopleAdapter;
     private ListView peopleListView;
     private Button addPersonButton;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor preferenceEditor;
+    private Type type;
+    private Gson gson = new Gson();
+    private String json;
     public static final String EXTRA_KEY = "key";
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        peopleList = new ArrayList<Person>();
+//        //get set from the shared preferences to check if the array has been previously set
+//
+//        //Commenting out just in case there are errors
+        //TODO put variable set into the shared preferences and get array to save.
+
+//        if (!set) {
+//            peopleList = new ArrayList<>();
+//            json =  gson.toJson(peopleList);
+//            preferenceEditor.putString("MyArray", json);
+//            preferenceEditor.commit();
+//        }
+//        else {
+//            //if already set, then just retrieve the array from the shared preferences
+//            type = new TypeToken<List<Person>>(){}.getType();
+//            json = sharedPreferences.getString("MyArray", "");
+//            if (gson.fromJson(json, type) == null) {
+//                peopleList = new ArrayList<>();
+//                Toast.makeText(this, "it is null", Toast.LENGTH_SHORT).show();
+//            }
+//            else {
+//                peopleList = gson.fromJson(json, type);
+//                Toast.makeText(this, "it is not null", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//
+//        //shared preferences
+//        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+//        preferenceEditor  = sharedPreferences.edit();
+
         wiringWidgets();
         setOnClickListeners();
         adaptingArrays();
@@ -100,14 +138,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                         else {
                             peopleList.add(new Person(sName, sDescription, sDate, iAmountOwed));
+
+                            json =  gson.toJson(peopleList);
+                            preferenceEditor.putString("MyArray", json);
+                            preferenceEditor.commit();
                         }
                     }
                     else {
                         if(!sDate.equals("")){
                             peopleList.add(new Person(sName));
+
+                            json =  gson.toJson(peopleList);
+                            preferenceEditor.putString("MyArray", json);
+                            preferenceEditor.commit();
                         }
                         else {
                             peopleList.add(new Person(sName, sDate, iAmountOwed));
+
+                            json =  gson.toJson(peopleList);
+                            preferenceEditor.putString("MyArray", json);
+                            preferenceEditor.commit();
                         }
                     }
                     dialog.dismiss();
