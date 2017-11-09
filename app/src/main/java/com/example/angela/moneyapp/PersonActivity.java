@@ -1,7 +1,9 @@
 package com.example.angela.moneyapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -13,7 +15,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PersonActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -24,6 +31,11 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
     private ArrayAdapter<Owe> oweAdapter;
     private Person currentPerson;
     private Button addAmountButton;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor preferenceEditor;
+    private Type type;
+    private Gson gson = new Gson();
+    private String json;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,24 +45,36 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
         wiringWidgets();
         setOnClickListeners();
 
-//        adapter = new ArrayAdapter<>(this, R.layout.list_item_color, colorList);
-//        colorListView.setAdapter(adapter);
-////        setListItemColors();
-//        colorListView.setOnItemClickListener(new ListView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
-//                Intent i = new Intent(MainActivity.this, SpecificActivity.class);
-//                //get the object from teh ArrayList and put it in the extra for the Intent
-//                i.putExtra(EXTRA_NAME, colorList.get(pos));
-//                startActivity(i);
-//            }
-//        });
+        //shared preferences
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+        preferenceEditor  = sharedPreferences.edit();
 
         Intent get = getIntent();
         currentPerson = get.getParcelableExtra(MainActivity.EXTRA_KEY);
         personName = currentPerson.getName();
         nameTextView.setText(personName);
-        oweList = currentPerson.getOweList();
+
+        if (!sharedPreferences.contains("MyOweArray")) {
+
+            oweList = currentPerson.getOweList();
+            json =  gson.toJson(oweList);
+            preferenceEditor.putString("MyOweArray", json);
+            preferenceEditor.commit();
+        }
+        else {
+            //if already set, then just retrieve the array from the shared preferences
+            type = new TypeToken<List<Owe>>(){}.getType();
+            json = sharedPreferences.getString("MyOweArray", "");
+            if (gson.fromJson(json, type) == null) {
+                oweList = new ArrayList<>();
+                //the things null
+            }
+            else {
+                oweList = gson.fromJson(json, type);
+                //the things not null
+            }
+        }
+
         adaptArray();
 
     }
@@ -65,7 +89,7 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
         oweListView.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
-                //TODO make the popup to add an Owe
+                //what
             }
         });
     }
@@ -113,11 +137,19 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
                         }
                         else {
                             oweList.add(new Owe(iAmountOwed, sDate, sDescription));
+
+                            json =  gson.toJson(oweList);
+                            preferenceEditor.putString("MyOweArray", json);
+                            preferenceEditor.apply();
                         }
                     }
                     else {
                         if(!sDate.equals("")){
                             oweList.add(new Owe(iAmountOwed, sDate));
+
+                            json =  gson.toJson(oweList);
+                            preferenceEditor.putString("MyOweArray", json);
+                            preferenceEditor.apply();
                         }
                         else {
                             Toast.makeText(PersonActivity.this, "Please enter a date", Toast.LENGTH_SHORT).show();

@@ -147,7 +147,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     else {
                         if(!sDate.equals("")){
                             peopleList.add(new Person(sName));
-
                             json =  gson.toJson(peopleList);
                             preferenceEditor.putString("MyArray", json);
                             preferenceEditor.apply();

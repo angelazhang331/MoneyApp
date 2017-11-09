@@ -56,6 +56,11 @@ public class Owe implements Parcelable {
         isPaid = paid;
     }
 
+    @Override
+    public String toString() {
+        return "" + amount;
+    }
+
     protected Owe(Parcel in) {
         amount = in.readInt();
         date = in.readString();
