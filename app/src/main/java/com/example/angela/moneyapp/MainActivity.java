@@ -3,6 +3,7 @@ package com.example.angela.moneyapp;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -14,10 +15,12 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -38,34 +41,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        //get set from the shared preferences to check if the array has been previously set
-//
-//        //Commenting out just in case there are errors
-        //TODO put variable set into the shared preferences and get array to save..
+        //shared preferences
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+        preferenceEditor  = sharedPreferences.edit();
 
-//        if (!set) {
-//            peopleList = new ArrayList<>();
-//            json =  gson.toJson(peopleList);
-//            preferenceEditor.putString("MyArray", json);
-//            preferenceEditor.commit();
-//        }
-//        else {
-//            //if already set, then just retrieve the array from the shared preferences
-//            type = new TypeToken<List<Person>>(){}.getType();
-//            json = sharedPreferences.getString("MyArray", "");
-//            if (gson.fromJson(json, type) == null) {
-//                peopleList = new ArrayList<>();
-//                Toast.makeText(this, "it is null", Toast.LENGTH_SHORT).show();
-//            }
-//            else {
-//                peopleList = gson.fromJson(json, type);
-//                Toast.makeText(this, "it is not null", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//
-//        //shared preferences
-//        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
-//        preferenceEditor  = sharedPreferences.edit();
+        if (!sharedPreferences.contains("MyArray")) {
+            peopleList = new ArrayList<>();
+            json =  gson.toJson(peopleList);
+            preferenceEditor.putString("MyArray", json);
+            preferenceEditor.commit();
+        }
+        else {
+            //if already set, then just retrieve the array from the shared preferences
+            type = new TypeToken<List<Person>>(){}.getType();
+            json = sharedPreferences.getString("MyArray", "");
+            if (gson.fromJson(json, type) == null) {
+                peopleList = new ArrayList<>();
+                //the things null
+            }
+            else {
+                peopleList = gson.fromJson(json, type);
+                //the things not null
+            }
+        }
+
+
 
         wiringWidgets();
         setOnClickListeners();
@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                             json =  gson.toJson(peopleList);
                             preferenceEditor.putString("MyArray", json);
-                            preferenceEditor.commit();
+                            preferenceEditor.apply();
                         }
                     }
                     else {
@@ -150,14 +150,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                             json =  gson.toJson(peopleList);
                             preferenceEditor.putString("MyArray", json);
-                            preferenceEditor.commit();
+                            preferenceEditor.apply();
                         }
                         else {
                             peopleList.add(new Person(sName, sDate, iAmountOwed));
 
                             json =  gson.toJson(peopleList);
                             preferenceEditor.putString("MyArray", json);
-                            preferenceEditor.commit();
+                            preferenceEditor.apply();
                         }
                     }
                     dialog.dismiss();
