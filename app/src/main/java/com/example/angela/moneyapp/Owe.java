@@ -9,6 +9,7 @@ import android.os.Parcelable;
 //change
 public class Owe implements Parcelable {
     private int amount;
+    private int amountPaid;
     private String date;
     private String description;
     private boolean isPaid;
@@ -17,11 +18,25 @@ public class Owe implements Parcelable {
         this.amount = amount;
         this.date = date;
         this.description = description;
+        amountPaid = 0;
+        isPaid = false;
+
     }
 
     public Owe(int amount, String date) {
         this.amount = amount;
         this.date = date;
+        description = "";
+        amountPaid = 0;
+        isPaid = false;
+    }
+
+    public int getAmountPaid() {
+        return amountPaid;
+    }
+
+    public void setAmountPaid(int amountPaid) {
+        this.amountPaid = amountPaid;
     }
 
     public int getAmount() {

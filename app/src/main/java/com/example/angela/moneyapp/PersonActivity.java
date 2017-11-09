@@ -90,8 +90,92 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
                 //what
+                viewOwe(pos);
             }
         });
+    }
+
+    private void viewOwe(int pos) {
+        AlertDialog.Builder viewOweBuilder = new AlertDialog.Builder(PersonActivity.this);
+        View viewOweView = getLayoutInflater().inflate(R.layout.pop_up_view_owe, null);
+        final AlertDialog dialog = viewOweBuilder.create();
+
+        //Wiring the dialog widgets
+        TextView dateTextView = (TextView) findViewById(R.id.textView_date);
+        TextView amountOwedTextView = (TextView) findViewById(R.id.textView_amount_owed);
+        TextView amountPaidTextView = (TextView) findViewById(R.id.textView_amount_paid);
+
+        //Setting the textview text?
+        dateTextView.setText(oweList.get(pos).getDate());
+        amountOwedTextView.setText(oweList.get(pos).getAmount());
+        amountPaidTextView.setText(oweList.get(pos).getAmountPaid());
+//
+//        /**
+//         * When submitted, we'll convert the data of our widget variables to be applicable for the 'Person' class
+//         * The dialog will not accept an empty name field, all other fields are optional
+//         */
+//        submit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if(!etName.getText().toString().isEmpty()){ //if the name field is NOT empty
+//
+//                    //First, convert the EditText to String variables
+//                    String sName = etName.getText().toString();
+//                    String sAmountOwed = etAmountOwed.getText().toString();
+//                    String sDate = etDate.getText().toString();
+//                    String sDescription = etDescription.getText().toString();
+//                    int iAmountOwed = 0;
+//
+//                    if (!sAmountOwed.equals("")) {
+//                        //Second, convert our amount owed to an integer
+//                        iAmountOwed = Integer.parseInt(sAmountOwed);
+//                    }
+//
+//                    if (!sDescription.equals("")) {
+//                        if (sDate.equals("")) {
+//                            Toast.makeText(MainActivity.this, "Please enter a date", Toast.LENGTH_SHORT).show();
+//                        }
+//                        else {
+//                            peopleList.add(new Person(sName, sDescription, sDate, iAmountOwed));
+//
+//                            json =  gson.toJson(peopleList);
+//                            preferenceEditor.putString("MyArray", json);
+//                            preferenceEditor.apply();
+//                        }
+//                    }
+//                    else {
+//                        if(!sDate.equals("")){
+//                            peopleList.add(new Person(sName));
+//                            json =  gson.toJson(peopleList);
+//                            preferenceEditor.putString("MyArray", json);
+//                            preferenceEditor.apply();
+//                        }
+//                        else {
+//                            peopleList.add(new Person(sName, sDate, iAmountOwed));
+//
+//                            json =  gson.toJson(peopleList);
+//                            preferenceEditor.putString("MyArray", json);
+//                            preferenceEditor.apply();
+//                        }
+//                    }
+//                    dialog.dismiss();
+//                    sortByName();
+//                }
+//                else {
+//                    Toast.makeText(MainActivity.this, "Please fill in the name field", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+//
+//        cancel.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                dialog.dismiss();
+//            }
+//        });
+//
+//        dialog.setView(addPersonView);
+//        dialog.show();
     }
 
     private void wiringWidgets() {
