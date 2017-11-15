@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -83,7 +85,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(send);
             }
         });
+        peopleListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                showMenu(view);
+                return false;
+            }
+        });
+    }
 
+    private void showMenu(View view){
+        PopupMenu deleteMenu = new PopupMenu(this, view);
+        deleteMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                int id = menuItem.getItemId();
+                switch (id){
+                    case R.id.pop_up_item_delete:
+                        //delete here
+                        break;
+                }
+                return true;
+            }
+        });
+        deleteMenu.inflate(R.menu.pop_up_menu);
+        deleteMenu.show();
     }
 
 
