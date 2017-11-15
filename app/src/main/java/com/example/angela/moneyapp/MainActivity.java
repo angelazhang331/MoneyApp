@@ -216,6 +216,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
+
     private void sortByName(){
         Collections.sort(peopleList);
         peopleAdapter.notifyDataSetChanged();

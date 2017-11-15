@@ -95,87 +95,77 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
         });
     }
 
-    private void viewOwe(int pos) {
+    private void viewOwe(final int pos) {
         AlertDialog.Builder viewOweBuilder = new AlertDialog.Builder(PersonActivity.this);
         View viewOweView = getLayoutInflater().inflate(R.layout.pop_up_view_owe, null);
         final AlertDialog dialog = viewOweBuilder.create();
 
-        //Wiring the dialog widgets
-        TextView dateTextView = (TextView) findViewById(R.id.textView_date);
-        TextView amountOwedTextView = (TextView) findViewById(R.id.textView_amount_owed);
-        TextView amountPaidTextView = (TextView) findViewById(R.id.textView_amount_paid);
+         final Owe currentOwe = oweList.get(pos);
 
-        //Setting the textview text?
-        dateTextView.setText(oweList.get(pos).getDate());
-        amountOwedTextView.setText(oweList.get(pos).getAmount());
-        amountPaidTextView.setText(oweList.get(pos).getAmountPaid());
+
+         //TODO This doesn't seem to exist?
+        //Wiring the dialog widgets
+        TextView oweDateTextView = (TextView) findViewById(R.id.textView_owe_date);
+        TextView amountOwedTextView = (TextView) findViewById(R.id.textView_pay_amount_owed);
+        final TextView amountPaidTextView = (TextView) findViewById(R.id.textView_amount_paid);
+        final EditText amountToPayEditText = (EditText) findViewById(R.id.editText_pay_owe);
+        Button payAmountButton = (Button) findViewById(R.id.button_pay);
+        Button donePayButton = (Button) findViewById(R.id.button_pay_done);
+
+        //Setting the textview text
+        oweDateTextView.setText(currentOwe.getDate());
+        amountOwedTextView.setText(currentOwe.getAmount());
+        amountPaidTextView.setText(currentOwe.getAmountPaid());
+
+        if(currentOwe.isPaid()) {
+            amountToPayEditText.setActivated(false); ;
+            amountToPayEditText.setText("Paid");
+        }
+
+        /**
+         * When submitted, we'll convert the data of our widget variables to be applicable for the 'Person' class
+         * The dialog will not accept an empty name field, all other fields are optional
+         */
+        payAmountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!amountToPayEditText.getText().toString().isEmpty()) {
+                    int amountToPay = Integer.parseInt(amountToPayEditText.getText().toString());
+                    if(currentOwe.getAmount() < amountToPay + currentOwe.getAmountPaid()){
+
+                        Toast.makeText(PersonActivity.this, "Entered value too large", Toast.LENGTH_SHORT).show();
+
+                    }
+                    else {
+                        Toast.makeText(PersonActivity.this, "Paid " + amountToPay, Toast.LENGTH_SHORT).show();
+                        currentOwe.setAmountPaid(currentOwe.getAmount() + amountToPay);
+                        oweList.remove(pos);
+                        oweList.add(pos, currentOwe);
+
+                        json =  gson.toJson(oweList);
+                        preferenceEditor.putString("MyOweArray", json);
+                        preferenceEditor.apply();
+
+                        amountPaidTextView.setText(currentOwe.getAmountPaid());
+
+                        dialog.dismiss();
+                    }
+                }
+                else {
+                    Toast.makeText(PersonActivity.this, "Please enter amount to pay", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 //
-//        /**
-//         * When submitted, we'll convert the data of our widget variables to be applicable for the 'Person' class
-//         * The dialog will not accept an empty name field, all other fields are optional
-//         */
-//        submit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if(!etName.getText().toString().isEmpty()){ //if the name field is NOT empty
-//
-//                    //First, convert the EditText to String variables
-//                    String sName = etName.getText().toString();
-//                    String sAmountOwed = etAmountOwed.getText().toString();
-//                    String sDate = etDate.getText().toString();
-//                    String sDescription = etDescription.getText().toString();
-//                    int iAmountOwed = 0;
-//
-//                    if (!sAmountOwed.equals("")) {
-//                        //Second, convert our amount owed to an integer
-//                        iAmountOwed = Integer.parseInt(sAmountOwed);
-//                    }
-//
-//                    if (!sDescription.equals("")) {
-//                        if (sDate.equals("")) {
-//                            Toast.makeText(MainActivity.this, "Please enter a date", Toast.LENGTH_SHORT).show();
-//                        }
-//                        else {
-//                            peopleList.add(new Person(sName, sDescription, sDate, iAmountOwed));
-//
-//                            json =  gson.toJson(peopleList);
-//                            preferenceEditor.putString("MyArray", json);
-//                            preferenceEditor.apply();
-//                        }
-//                    }
-//                    else {
-//                        if(!sDate.equals("")){
-//                            peopleList.add(new Person(sName));
-//                            json =  gson.toJson(peopleList);
-//                            preferenceEditor.putString("MyArray", json);
-//                            preferenceEditor.apply();
-//                        }
-//                        else {
-//                            peopleList.add(new Person(sName, sDate, iAmountOwed));
-//
-//                            json =  gson.toJson(peopleList);
-//                            preferenceEditor.putString("MyArray", json);
-//                            preferenceEditor.apply();
-//                        }
-//                    }
-//                    dialog.dismiss();
-//                    sortByName();
-//                }
-//                else {
-//                    Toast.makeText(MainActivity.this, "Please fill in the name field", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-//
-//        cancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                dialog.dismiss();
-//            }
-//        });
-//
-//        dialog.setView(addPersonView);
-//        dialog.show();
+        donePayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.setView(viewOweView);
+        dialog.show();
     }
 
     private void wiringWidgets() {
