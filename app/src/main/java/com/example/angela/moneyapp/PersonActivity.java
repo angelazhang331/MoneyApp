@@ -1,9 +1,7 @@
 package com.example.angela.moneyapp;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -15,12 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 public class PersonActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -30,12 +23,15 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
     private ArrayList<Owe> oweList;
     private ArrayAdapter<Owe> oweAdapter;
     private Person currentPerson;
-    private Button addAmountButton;
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor preferenceEditor;
-    private Type type;
-    private Gson gson = new Gson();
-    private String json;
+    private Button addAmountButton, backButton;
+    private ArrayList<Person> personList;
+    private int currentPersonPos;
+    public static final String SEND_KEY = "key2";
+//    private SharedPreferences sharedPreferences;
+//    private SharedPreferences.Editor preferenceEditor;
+//    private Type type;
+//    private Gson gson = new Gson();
+//    private String json;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,35 +41,36 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
         wiringWidgets();
         setOnClickListeners();
 
-        //shared preferences
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
-        preferenceEditor  = sharedPreferences.edit();
+//        //shared preferences
+//        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+//        preferenceEditor  = sharedPreferences.edit();
 
         Intent get = getIntent();
         currentPerson = get.getParcelableExtra(MainActivity.EXTRA_KEY);
         personName = currentPerson.getName();
         nameTextView.setText(personName);
+        personList = get.getParcelableArrayListExtra(MainActivity.EXTRA_ARRAY_KEY);
 
-        if (!sharedPreferences.contains("MyOweArray")) {
+//        if (!sharedPreferences.contains("MainArray")) {
 
             oweList = currentPerson.getOweList();
-            json =  gson.toJson(oweList);
-            preferenceEditor.putString("MyOweArray", json);
-            preferenceEditor.commit();
-        }
-        else {
-            //if already set, then just retrieve the array from the shared preferences
-            type = new TypeToken<List<Owe>>(){}.getType();
-            json = sharedPreferences.getString("MyOweArray", "");
-            if (gson.fromJson(json, type) == null) {
-                oweList = new ArrayList<>();
-                //the things null
-            }
-            else {
-                oweList = gson.fromJson(json, type);
-                //the things not null
-            }
-        }
+//            json =  gson.toJson(oweList);
+//            preferenceEditor.putString("MyOweArray", json);
+//            preferenceEditor.commit();
+//        }
+//        else {
+//            //if already set, then just retrieve the array from the shared preferences
+//            type = new TypeToken<List<Owe>>(){}.getType();
+//            json = sharedPreferences.getString("MyOweArray", "");
+//            if (gson.fromJson(json, type) == null) {
+//                oweList = new ArrayList<>();
+//                //the things null
+//            }
+//            else {
+//                oweList = gson.fromJson(json, type);
+//                //the things not null
+//            }
+//        }
 
         adaptArray();
 
@@ -81,6 +78,7 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
 
     private void setOnClickListeners() {
         addAmountButton.setOnClickListener(this);
+        backButton.setOnClickListener(this);
     }
 
     private void adaptArray() {
@@ -142,9 +140,9 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
                         oweList.remove(pos);
                         oweList.add(pos, currentOwe);
 
-                        json =  gson.toJson(oweList);
-                        preferenceEditor.putString("MyOweArray", json);
-                        preferenceEditor.apply();
+//                        json =  gson.toJson(oweList);
+//                        preferenceEditor.putString("MyOweArray", json);
+//                        preferenceEditor.apply();
 
                         amountPaidTextView.setText(currentOwe.getAmountPaid());
 
@@ -172,11 +170,27 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
         nameTextView = (TextView) findViewById(R.id.textView_name);
         oweListView = (ListView) findViewById(R.id.listView_owes);
         addAmountButton = (Button) findViewById(R.id.button_new_amount);
+        backButton = (Button) findViewById(R.id.button_back);
     }
 
     @Override
     public void onClick(View view) {
-        addAmount();
+        switch(view.getId()) {
+            case R.id.button_new_amount:
+                addAmount();
+                break;
+            case R.id.button_back:
+                back();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void back() {
+        Intent sendBack = new Intent(PersonActivity.this, MainActivity.class);
+        sendBack.putExtra(SEND_KEY, personList);
+        startActivity(sendBack);
     }
 
     private void addAmount() {
@@ -211,25 +225,37 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
                         }
                         else {
                             oweList.add(new Owe(iAmountOwed, sDate, sDescription));
+                            currentPerson.setOweList(oweList);
+                            personList.remove(currentPersonPos);
+                            personList.add(currentPersonPos, currentPerson);
+                            oweAdapter.notifyDataSetChanged();
 
-                            json =  gson.toJson(oweList);
-                            preferenceEditor.putString("MyOweArray", json);
-                            preferenceEditor.apply();
+//                            json =  gson.toJson(oweList);
+//                            preferenceEditor.putString("MyOweArray", json);
+//                            preferenceEditor.apply();
+
+
+                            dialog.dismiss();
                         }
                     }
                     else {
                         if(!sDate.equals("")){
                             oweList.add(new Owe(iAmountOwed, sDate));
+                            currentPerson.setOweList(oweList);
+                            personList.remove(currentPersonPos);
+                            personList.add(currentPersonPos, currentPerson);
+                            oweAdapter.notifyDataSetChanged();
 
-                            json =  gson.toJson(oweList);
-                            preferenceEditor.putString("MyOweArray", json);
-                            preferenceEditor.apply();
+//                            json =  gson.toJson(oweList);
+//                            preferenceEditor.putString("MyOweArray", json);
+//                            preferenceEditor.apply();
+
+                            dialog.dismiss();
                         }
                         else {
                             Toast.makeText(PersonActivity.this, "Please enter a date", Toast.LENGTH_SHORT).show();
                         }
                     }
-                    dialog.dismiss();
                 }
                 else {
                     Toast.makeText(PersonActivity.this, "Please fill in the amount field", Toast.LENGTH_SHORT).show();

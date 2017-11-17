@@ -50,6 +50,10 @@ public class Person implements Parcelable, Comparable<Person> {
         return oweList;
     }
 
+    public void setOweList(ArrayList<Owe> oweList) {
+        this.oweList = oweList;
+    }
+
     public void addOwe(String date, String description, int amount) {
         Owe initial = new Owe(amount, date, description);
         oweList.add(initial);

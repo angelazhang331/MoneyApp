@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Gson gson = new Gson();
     private String json;
     public static final String EXTRA_KEY = "key";
+    public static final String EXTRA_ARRAY_KEY = "array key";
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +68,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
 
-
+//TODO WHERE DOES THE INTENTE COME FROM AND WHY IT NO WORK BECAUSE FUCK
+//        Intent get = getIntent();
+//        if (get.getParcelableArrayListExtra(PersonActivity.SEND_KEY) != null) {
+//
+//            peopleList = get.getParcelableArrayListExtra(MainActivity.EXTRA_KEY);
+//            json =  gson.toJson(peopleList);
+//            preferenceEditor.putString("MyArray", json);
+//            preferenceEditor.apply();
+//        }
 
         wiringWidgets();
         setOnClickListeners();
         adaptingArrays();
+
     }
 
     private void adaptingArrays() {
@@ -82,19 +92,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
                 Intent send = new Intent(MainActivity.this, PersonActivity.class);
                 send.putExtra(EXTRA_KEY, peopleList.get(pos));
+                send.putExtra(EXTRA_ARRAY_KEY, peopleList);
                 startActivity(send);
             }
         });
         peopleListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                showMenu(view);
-                return false;
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long l) {
+                showMenu(view, pos);
+                return true;
             }
         });
     }
 
-    private void showMenu(View view){
+    private void showMenu(View view, final int pos){
         PopupMenu deleteMenu = new PopupMenu(this, view);
         deleteMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
@@ -102,7 +113,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 int id = menuItem.getItemId();
                 switch (id){
                     case R.id.pop_up_item_delete:
-                        //delete here
+                        peopleList.remove(pos);
+                        json = gson.toJson(peopleList);
+                        preferenceEditor.putString("MyArray", json);
+                        preferenceEditor.apply();
+                        sortByName();
                         break;
                 }
                 return true;
