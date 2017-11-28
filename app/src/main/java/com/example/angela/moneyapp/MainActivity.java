@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String json;
     public static final String EXTRA_KEY = "key";
     public static final String EXTRA_ARRAY_KEY = "array key";
+    public static final String POS_KEY = "position key";
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,15 +69,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
 
-//TODO WHERE DOES THE INTENTE COME FROM AND WHY IT NO WORK BECAUSE FUCK
-//        Intent get = getIntent();
-//        if (get.getParcelableArrayListExtra(PersonActivity.SEND_KEY) != null) {
-//
-//            peopleList = get.getParcelableArrayListExtra(MainActivity.EXTRA_KEY);
-//            json =  gson.toJson(peopleList);
-//            preferenceEditor.putString("MyArray", json);
-//            preferenceEditor.apply();
-//        }
+        Intent get = getIntent();
+        if (get.getParcelableArrayListExtra(PersonActivity.SEND_KEY) != null) {
+
+            Toast.makeText(this, "It is not null", Toast.LENGTH_SHORT).show();
+            peopleList = get.getParcelableArrayListExtra(PersonActivity.SEND_KEY);
+            json =  gson.toJson(peopleList);
+            preferenceEditor.putString("MyArray", json);
+            preferenceEditor.apply();
+        }
+        else {
+            Toast.makeText(this, "It is null", Toast.LENGTH_SHORT).show();
+        }
 
         wiringWidgets();
         setOnClickListeners();
@@ -93,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent send = new Intent(MainActivity.this, PersonActivity.class);
                 send.putExtra(EXTRA_KEY, peopleList.get(pos));
                 send.putExtra(EXTRA_ARRAY_KEY, peopleList);
+                send.putExtra(POS_KEY, pos);
                 startActivity(send);
             }
         });
@@ -250,4 +255,19 @@ Ideas
 - Would have to identify the position and the difference between this and others when writing intents to change screens
 
 - To do only if there is extra time.
+ */
+
+/*
+TODO have the app check if they are inputting an amount to see if date is required
+if not, find a replacement or temporary value for the date
+or
+completely remove the option to add an amount while creating a new person
+
+could have fields that ask for email and phone number or something like that instead of date and amount
+
+TODO: in the amount paid, include something showing how much is still owed; add labels by the numbers; have the toast say paid to which date
+
+TODO: have the textview for each listview item change color to show whether it was paid or not. Update the array for whether or not the thing was paid and the amount paid
+
+TODO transfer the extra pay to the next owe?
  */

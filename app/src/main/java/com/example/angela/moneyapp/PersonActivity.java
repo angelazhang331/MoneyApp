@@ -27,11 +27,7 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
     private ArrayList<Person> personList;
     private int currentPersonPos;
     public static final String SEND_KEY = "key2";
-//    private SharedPreferences sharedPreferences;
-//    private SharedPreferences.Editor preferenceEditor;
-//    private Type type;
-//    private Gson gson = new Gson();
-//    private String json;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,36 +37,14 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
         wiringWidgets();
         setOnClickListeners();
 
-//        //shared preferences
-//        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
-//        preferenceEditor  = sharedPreferences.edit();
-
         Intent get = getIntent();
         currentPerson = get.getParcelableExtra(MainActivity.EXTRA_KEY);
+        currentPersonPos = get.getIntExtra(MainActivity.POS_KEY, 0);
         personName = currentPerson.getName();
         nameTextView.setText(personName);
         personList = get.getParcelableArrayListExtra(MainActivity.EXTRA_ARRAY_KEY);
 
-//        if (!sharedPreferences.contains("MainArray")) {
-
-            oweList = currentPerson.getOweList();
-//            json =  gson.toJson(oweList);
-//            preferenceEditor.putString("MyOweArray", json);
-//            preferenceEditor.commit();
-//        }
-//        else {
-//            //if already set, then just retrieve the array from the shared preferences
-//            type = new TypeToken<List<Owe>>(){}.getType();
-//            json = sharedPreferences.getString("MyOweArray", "");
-//            if (gson.fromJson(json, type) == null) {
-//                oweList = new ArrayList<>();
-//                //the things null
-//            }
-//            else {
-//                oweList = gson.fromJson(json, type);
-//                //the things not null
-//            }
-//        }
+        oweList = currentPerson.getOweList();
 
         adaptArray();
 
@@ -98,33 +72,33 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
         View viewOweView = getLayoutInflater().inflate(R.layout.pop_up_view_owe, null);
         final AlertDialog dialog = viewOweBuilder.create();
 
-         final Owe currentOwe = oweList.get(pos);
+        final Owe currentOwe = oweList.get(pos);
+        if(currentOwe != null){
+            Toast.makeText(this, "not null", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(this, "null", Toast.LENGTH_SHORT).show();
+        }
 
-
-         //TODO This doesn't seem to exist?
         //Wiring the dialog widgets
-        TextView oweDateTextView = (TextView) findViewById(R.id.textView_owe_date);
-        TextView amountOwedTextView = (TextView) findViewById(R.id.textView_pay_amount_owed);
-        final TextView amountPaidTextView = (TextView) findViewById(R.id.textView_amount_paid);
-        final EditText amountToPayEditText = (EditText) findViewById(R.id.editText_pay_owe);
-        Button payAmountButton = (Button) findViewById(R.id.button_pay);
-        Button donePayButton = (Button) findViewById(R.id.button_pay_done);
+        TextView oweDateTextView = (TextView) viewOweView.findViewById(R.id.textView_owe_date);
+        TextView amountOwedTextView = (TextView) viewOweView.findViewById(R.id.textView_pay_amount_owed);
+        final TextView amountPaidTextView = (TextView) viewOweView.findViewById(R.id.textView_amount_paid);
+        final EditText amountToPayEditText = (EditText) viewOweView.findViewById(R.id.editText_pay_owe);
+        Button pay = (Button) viewOweView.findViewById(R.id.button_pay);
+        Button done = (Button) viewOweView.findViewById(R.id.button_pay_done);
 
-        //Setting the textview text
-        oweDateTextView.setText(currentOwe.getDate());
-        amountOwedTextView.setText(currentOwe.getAmount());
-        amountPaidTextView.setText(currentOwe.getAmountPaid());
+            //Setting the textview text
+            oweDateTextView.setText(currentOwe.getDate());
+            amountOwedTextView.setText("" + currentOwe.getAmount());
+            amountPaidTextView.setText("" + currentOwe.getAmountPaid());
 
         if(currentOwe.isPaid()) {
-            amountToPayEditText.setActivated(false); ;
+            amountToPayEditText.setActivated(false);
             amountToPayEditText.setText("Paid");
         }
 
-        /**
-         * When submitted, we'll convert the data of our widget variables to be applicable for the 'Person' class
-         * The dialog will not accept an empty name field, all other fields are optional
-         */
-        payAmountButton.setOnClickListener(new View.OnClickListener() {
+        pay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!amountToPayEditText.getText().toString().isEmpty()) {
@@ -136,7 +110,7 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
                     }
                     else {
                         Toast.makeText(PersonActivity.this, "Paid " + amountToPay, Toast.LENGTH_SHORT).show();
-                        currentOwe.setAmountPaid(currentOwe.getAmount() + amountToPay);
+                        currentOwe.setAmountPaid(currentOwe.getAmountPaid() + amountToPay);
                         oweList.remove(pos);
                         oweList.add(pos, currentOwe);
 
@@ -144,7 +118,7 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
 //                        preferenceEditor.putString("MyOweArray", json);
 //                        preferenceEditor.apply();
 
-                        amountPaidTextView.setText(currentOwe.getAmountPaid());
+                        amountPaidTextView.setText("" + currentOwe.getAmountPaid());
 
                         dialog.dismiss();
                     }
@@ -155,7 +129,7 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
 //
-        donePayButton.setOnClickListener(new View.OnClickListener() {
+        done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
