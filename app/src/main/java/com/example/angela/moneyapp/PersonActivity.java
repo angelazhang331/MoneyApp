@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,11 +26,10 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
     private ArrayList<Owe> oweList;
     private ArrayAdapter<Owe> oweAdapter;
     private Person currentPerson;
-    private Button addAmountButton, backButton;
+    private Button addAmountButton;
     private ArrayList<Person> personList;
     private int currentPersonPos;
     public static final String SEND_KEY = "key2";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,13 +48,13 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
 
         oweList = currentPerson.getOweList();
 
+
         adaptArray();
 
     }
 
     private void setOnClickListeners() {
         addAmountButton.setOnClickListener(this);
-        backButton.setOnClickListener(this);
     }
 
     private void adaptArray() {
@@ -65,6 +67,39 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
                 viewOwe(pos);
             }
         });
+        oweListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long l) {
+                showMenu(view, pos);
+                return true;
+            }
+        });
+    }
+
+    private void showMenu(View view, final int pos){
+        PopupMenu deleteMenu = new PopupMenu(this, view);
+        deleteMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                int id = menuItem.getItemId();
+                switch (id) {
+                    case R.id.pop_up_item_delete:
+                        oweList.remove(pos);
+                        currentPerson.setOweList(oweList);
+                        personList.remove(currentPersonPos);
+                        personList.add(currentPersonPos, currentPerson);
+                        sort();
+                        break;
+                }
+                return false;
+            }
+        });
+        deleteMenu.inflate(R.menu.pop_up_menu);
+        deleteMenu.show();
+    }
+
+    private void sort() {
+        oweAdapter.notifyDataSetChanged();
     }
 
     private void viewOwe(final int pos) {
@@ -73,12 +108,6 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
         final AlertDialog dialog = viewOweBuilder.create();
 
         final Owe currentOwe = oweList.get(pos);
-        if(currentOwe != null){
-            Toast.makeText(this, "not null", Toast.LENGTH_SHORT).show();
-        }
-        else{
-            Toast.makeText(this, "null", Toast.LENGTH_SHORT).show();
-        }
 
         //Wiring the dialog widgets
         TextView oweDateTextView = (TextView) viewOweView.findViewById(R.id.textView_owe_date);
@@ -92,10 +121,13 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
             oweDateTextView.setText(currentOwe.getDate());
             amountOwedTextView.setText("" + currentOwe.getAmount());
             amountPaidTextView.setText("" + currentOwe.getAmountPaid());
+        Log.d("TAG", "viewOwe: " + currentOwe.getAmountPaid());
 
         if(currentOwe.isPaid()) {
+            //TODO disable things
+
             amountToPayEditText.setActivated(false);
-            amountToPayEditText.setText("Paid");
+            amountToPayEditText.setHint("Paid");
         }
 
         pay.setOnClickListener(new View.OnClickListener() {
@@ -109,14 +141,39 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
 
                     }
                     else {
-                        Toast.makeText(PersonActivity.this, "Paid " + amountToPay, Toast.LENGTH_SHORT).show();
-                        currentOwe.setAmountPaid(currentOwe.getAmountPaid() + amountToPay);
-                        oweList.remove(pos);
-                        oweList.add(pos, currentOwe);
+                        if(currentOwe.getAmountPaid() + amountToPay == currentOwe.getAmount()) {
+                            Toast.makeText(PersonActivity.this, "Paid!", Toast.LENGTH_SHORT).show();
 
-//                        json =  gson.toJson(oweList);
-//                        preferenceEditor.putString("MyOweArray", json);
-//                        preferenceEditor.apply();
+
+                            Log.d("TAG", "viewOwe: " + currentOwe.getAmountPaid());
+
+                            currentOwe.setAmountPaid(currentOwe.getAmount());
+                            currentOwe.setPaid(true);
+                            oweList.remove(pos);
+                            oweList.add(pos, currentOwe);
+                            currentPerson.setOweList(oweList);
+                            personList.remove(currentPersonPos);
+                            personList.add(currentPersonPos, currentPerson);
+                            sort();
+
+                            Log.d("TAG", "viewOwe: " + currentOwe.getAmountPaid());
+                        }
+                        else{
+                            Toast.makeText(PersonActivity.this, "Paid " + amountToPay, Toast.LENGTH_SHORT).show();
+
+
+                            Log.d("TAG", "viewOwe: " + currentOwe.getAmountPaid());
+
+                            currentOwe.setAmountPaid(currentOwe.getAmountPaid() + amountToPay);
+                            oweList.remove(pos);
+                            oweList.add(pos, currentOwe);
+                            currentPerson.setOweList(oweList);
+                            personList.remove(currentPersonPos);
+                            personList.add(currentPersonPos, currentPerson);
+                            sort();
+
+                            Log.d("TAG", "viewOwe: " + currentOwe.getAmountPaid());
+                        }
 
                         amountPaidTextView.setText("" + currentOwe.getAmountPaid());
 
@@ -144,7 +201,6 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
         nameTextView = (TextView) findViewById(R.id.textView_name);
         oweListView = (ListView) findViewById(R.id.listView_owes);
         addAmountButton = (Button) findViewById(R.id.button_new_amount);
-        backButton = (Button) findViewById(R.id.button_back);
     }
 
     @Override
@@ -153,18 +209,16 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.button_new_amount:
                 addAmount();
                 break;
-            case R.id.button_back:
-                back();
-                break;
             default:
                 break;
         }
     }
 
-    private void back() {
+    public void onBackPressed() {
         Intent sendBack = new Intent(PersonActivity.this, MainActivity.class);
         sendBack.putExtra(SEND_KEY, personList);
         startActivity(sendBack);
+        super.onBackPressed();
     }
 
     private void addAmount() {
@@ -202,7 +256,7 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
                             currentPerson.setOweList(oweList);
                             personList.remove(currentPersonPos);
                             personList.add(currentPersonPos, currentPerson);
-                            oweAdapter.notifyDataSetChanged();
+                            sort();
 
 //                            json =  gson.toJson(oweList);
 //                            preferenceEditor.putString("MyOweArray", json);
@@ -218,7 +272,7 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
                             currentPerson.setOweList(oweList);
                             personList.remove(currentPersonPos);
                             personList.add(currentPersonPos, currentPerson);
-                            oweAdapter.notifyDataSetChanged();
+                            sort();
 
 //                            json =  gson.toJson(oweList);
 //                            preferenceEditor.putString("MyOweArray", json);

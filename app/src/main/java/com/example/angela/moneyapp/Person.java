@@ -37,6 +37,11 @@ public class Person implements Parcelable, Comparable<Person> {
         oweList = new ArrayList<>();
     }
 
+    public Person(String name, ArrayList<Owe> oweList) {
+        this.oweList = oweList;
+        this.name = name;
+    }
+
     //methods
     public String getName() {
         return name;

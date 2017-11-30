@@ -20,7 +20,6 @@ public class Owe implements Parcelable {
         this.description = description;
         amountPaid = 0;
         isPaid = false;
-
     }
 
     public Owe(int amount, String date) {
@@ -29,6 +28,14 @@ public class Owe implements Parcelable {
         description = "";
         amountPaid = 0;
         isPaid = false;
+    }
+
+    public Owe(int amount, String date, String description, int amountPaid, boolean isPaid) {
+        this.amount = amount;
+        this.date = date;
+        this.description = description;
+        this.amountPaid = amountPaid;
+        this.isPaid = isPaid;
     }
 
     public int getAmountPaid() {
@@ -77,35 +84,37 @@ public class Owe implements Parcelable {
     }
 
     protected Owe(Parcel in) {
-        amount = in.readInt();
-        date = in.readString();
-        description = in.readString();
-        isPaid = in.readByte() != 0x00;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(amount);
-        dest.writeString(date);
-        dest.writeString(description);
-        dest.writeByte((byte) (isPaid ? 0x01 : 0x00));
-    }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<Owe> CREATOR = new Parcelable.Creator<Owe>() {
-        @Override
-        public Owe createFromParcel(Parcel in) {
-            return new Owe(in);
+            amount = in.readInt();
+            amountPaid = in.readInt();
+            date = in.readString();
+            description = in.readString();
+            isPaid = in.readByte() != 0x00;
         }
 
         @Override
-        public Owe[] newArray(int size) {
-            return new Owe[size];
+        public int describeContents() {
+            return 0;
         }
-    };
-}
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(amount);
+            dest.writeInt(amountPaid);
+            dest.writeString(date);
+            dest.writeString(description);
+            dest.writeByte((byte) (isPaid ? 0x01 : 0x00));
+        }
+
+        @SuppressWarnings("unused")
+        public static final Parcelable.Creator<Owe> CREATOR = new Parcelable.Creator<Owe>() {
+            @Override
+            public Owe createFromParcel(Parcel in) {
+                return new Owe(in);
+            }
+
+            @Override
+            public Owe[] newArray(int size) {
+                return new Owe[size];
+            }
+        };
+    }
