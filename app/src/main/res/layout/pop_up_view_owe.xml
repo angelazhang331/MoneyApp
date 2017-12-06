@@ -7,14 +7,14 @@
 
     <TextView
         android:id="@+id/textView_owe_date"
-        android:layout_width="125dp"
-        android:layout_height="29dp"
+        android:layout_width="179dp"
+        android:layout_height="28dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/bebas_neue_regular"
-        android:text="Date"
+        android:text="Date - Owe"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -27,7 +27,6 @@
         android:id="@+id/textView_pay_amount_owed"
         android:layout_width="125dp"
         android:layout_height="25dp"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -35,16 +34,15 @@
         android:text="Amount Owed:"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="14dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_owe_date"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_description" />
 
     <TextView
         android:id="@+id/textView_amount_paid"
-        android:layout_width="125dp"
+        android:layout_width="165dp"
         android:layout_height="25dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
@@ -52,6 +50,7 @@
         android:layout_marginTop="8dp"
         android:fontFamily="@font/bebas_neue_regular"
         android:text="Amount Paid:"
+        android:textSize="14dp"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -102,5 +101,21 @@
         app:layout_constraintHorizontal_bias="0.369"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_pay_owe" />
+
+    <TextView
+        android:id="@+id/textView_description"
+        android:layout_width="173dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/bebas_neue_regular"
+        android:text="Description"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_owe_date" />
 
 </android.support.constraint.ConstraintLayout>
