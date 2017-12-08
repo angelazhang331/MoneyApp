@@ -198,6 +198,7 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
 
         dialog.setView(viewOweView);
         dialog.show();
+        dialog.getWindow().setLayout(1000, 990);
     }
 
     private void wiringWidgets() {
@@ -303,5 +304,6 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
 
         dialog.setView(addAmountView);
         dialog.show();
+        dialog.getWindow().setLayout(1100, 1050);
     }
 }

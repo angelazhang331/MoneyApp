@@ -4,71 +4,84 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="5dp">
 
     <TextView
         android:id="@+id/textView_pop_up_add_amount_title"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="32dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/bebas_neue_regular"
         android:gravity="center"
         android:text="Add Amount"
         android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.017" />
 
     <EditText
         android:id="@+id/editText_pop_up_add_amount_amount_owed"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="Amount Owed*"
+        android:fontFamily="@font/bebas_neue_regular"
         android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_pop_up_add_amount_title" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_pop_up_add_amount_title"
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/editText_pop_up_add_amount_date"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="Date*"
+        android:fontFamily="@font/bebas_neue_regular"
         android:inputType="date"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_pop_up_add_amount_amount_owed" />
+        app:layout_constraintTop_toBottomOf="@+id/editText_pop_up_add_amount_amount_owed"
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/editText_pop_up_add_amount_description"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:ems="10"
         android:hint="Description"
+        android:fontFamily="@font/bebas_neue_regular"
         android:inputType="textMultiLine"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_pop_up_add_amount_date" />
+        app:layout_constraintTop_toBottomOf="@+id/editText_pop_up_add_amount_date"
+        app:layout_constraintVertical_bias="0.02" />
 
     <Button
         android:id="@+id/button_pop_up_add_amount_submit"
@@ -80,14 +93,15 @@
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/colorAccent"
         android:text="SUBMIT"
+        android:fontFamily="@font/bebas_neue_regular"
         android:textAlignment="center"
         android:textColor="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.729"
+        app:layout_constraintHorizontal_bias="0.804"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_pop_up_add_amount_description"
-        app:layout_constraintVertical_bias="0.032" />
+        app:layout_constraintVertical_bias="0.029999971" />
 
     <Button
         android:id="@+id/button_pop_up_add_amount_cancel"
@@ -98,10 +112,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="CANCEL"
+        android:fontFamily="@font/bebas_neue_regular"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.275"
+        app:layout_constraintHorizontal_bias="0.207"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_pop_up_add_amount_description"
-        app:layout_constraintVertical_bias="0.032" />
+        app:layout_constraintVertical_bias="0.029" />
 </android.support.constraint.ConstraintLayout>
