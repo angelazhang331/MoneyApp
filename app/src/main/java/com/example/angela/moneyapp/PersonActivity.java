@@ -1,4 +1,4 @@
-package com.example.angela.avocadowe;
+package com.example.angela.moneyapp;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,8 +15,6 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.angela.moneyapp.R;
 
 import java.util.ArrayList;
 
@@ -114,22 +112,21 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
         //Wiring the dialog widgets
         TextView oweDateTextView = (TextView) viewOweView.findViewById(R.id.textView_owe_date);
         TextView amountOwedTextView = (TextView) viewOweView.findViewById(R.id.textView_pay_amount_owed);
-        TextView descriptionTextView = (TextView) viewOweView.findViewById(R.id.textView_description);
         final TextView amountPaidTextView = (TextView) viewOweView.findViewById(R.id.textView_amount_paid);
         final EditText amountToPayEditText = (EditText) viewOweView.findViewById(R.id.editText_pay_owe);
         Button pay = (Button) viewOweView.findViewById(R.id.button_pay);
         Button done = (Button) viewOweView.findViewById(R.id.button_pay_done);
 
             //Setting the textview text
-        descriptionTextView.setText("" + currentOwe.getDescription());
-        oweDateTextView.setText(currentOwe.getDate() + " - $" + currentOwe.getAmount());
-        amountOwedTextView.setText("Amount Still Owed: $" + (currentOwe.getAmount() - currentOwe.getAmountPaid()));
-        amountPaidTextView.setText("Amount Paid: $" + currentOwe.getAmountPaid());
+            oweDateTextView.setText(currentOwe.getDate());
+            amountOwedTextView.setText("" + currentOwe.getAmount());
+            amountPaidTextView.setText("" + currentOwe.getAmountPaid());
         Log.d("TAG", "viewOwe: " + currentOwe.getAmountPaid());
 
         if(currentOwe.isPaid()) {
-            amountToPayEditText.setEnabled(false);
-            pay.setEnabled(false);
+            //TODO disable things
+
+            amountToPayEditText.setActivated(false);
             amountToPayEditText.setHint("Paid");
         }
 

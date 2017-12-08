@@ -5,7 +5,7 @@
     android:id="@+id/layout_main_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.angela.moneyapp.com.example.angela.avocadowe.MainActivity">
+    tools:context="com.example.angela.moneyapp.MainActivity">
 
     <ListView
         android:id="@+id/listView_people"

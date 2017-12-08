@@ -1,4 +1,4 @@
-package com.example.angela.avocadowe;
+package com.example.angela.moneyapp;
 
 import android.os.Parcel;
 import android.os.Parcelable;
