@@ -1,4 +1,4 @@
-package com.example.angela.moneyapp;
+package com.example.angela.avocadowe;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
