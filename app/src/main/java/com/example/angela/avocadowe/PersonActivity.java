@@ -2,7 +2,6 @@ package com.example.angela.avocadowe;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -16,8 +15,8 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.design.widget.FloatingActionButton;
 
-import com.example.angela.moneyapp.R;
 
 import java.util.ArrayList;
 
@@ -112,13 +111,13 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
         final Owe currentOwe = oweList.get(pos);
 
         //Wiring the dialog widgets
-        TextView oweDateTextView = (TextView) viewOweView.findViewById(R.id.textView_owe_date);
-        TextView amountOwedTextView = (TextView) viewOweView.findViewById(R.id.textView_pay_amount_owed);
-        TextView descriptionTextView = (TextView) viewOweView.findViewById(R.id.textView_description);
-        final TextView amountPaidTextView = (TextView) viewOweView.findViewById(R.id.textView_amount_paid);
-        final EditText amountToPayEditText = (EditText) viewOweView.findViewById(R.id.editText_pay_owe);
-        Button pay = (Button) viewOweView.findViewById(R.id.button_pay);
-        Button done = (Button) viewOweView.findViewById(R.id.button_pay_done);
+        TextView oweDateTextView = viewOweView.findViewById(R.id.textView_owe_date);
+        TextView amountOwedTextView = viewOweView.findViewById(R.id.textView_pay_amount_owed);
+        TextView descriptionTextView = viewOweView.findViewById(R.id.textView_description);
+        final TextView amountPaidTextView = viewOweView.findViewById(R.id.textView_amount_paid);
+        final EditText amountToPayEditText = viewOweView.findViewById(R.id.editText_pay_owe);
+        Button pay = viewOweView.findViewById(R.id.button_pay);
+        Button done = viewOweView.findViewById(R.id.button_pay_done);
 
             //Setting the textview text
         descriptionTextView.setText("" + currentOwe.getDescription());
@@ -231,11 +230,11 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
         final AlertDialog dialog = addAmountBuilder.create();
 
         //Wiring the dialog widgets
-        final EditText etAmountOwed = (EditText) addAmountView.findViewById(R.id.editText_pop_up_add_amount_amount_owed);
-        final EditText etDate = (EditText) addAmountView.findViewById(R.id.editText_pop_up_add_amount_date);
-        final EditText etDescription = (EditText) addAmountView.findViewById(R.id.editText_pop_up_add_amount_description);
-        Button submit = (Button) addAmountView.findViewById(R.id.button_pop_up_add_amount_submit);
-        Button cancel = (Button) addAmountView.findViewById(R.id.button_pop_up_add_amount_cancel);
+        final EditText etAmountOwed = addAmountView.findViewById(R.id.editText_pop_up_add_amount_amount_owed);
+        final EditText etDate = addAmountView.findViewById(R.id.editText_pop_up_add_amount_date);
+        final EditText etDescription = addAmountView.findViewById(R.id.editText_pop_up_add_amount_description);
+        Button submit = addAmountView.findViewById(R.id.button_pop_up_add_amount_submit);
+        Button cancel = addAmountView.findViewById(R.id.button_pop_up_add_amount_cancel);
 
         /**
          * When submitted, we'll convert the data of our widget variables to be applicable for the 'Person' class

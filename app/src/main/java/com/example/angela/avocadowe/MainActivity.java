@@ -17,7 +17,6 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
-import com.example.angela.moneyapp.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
