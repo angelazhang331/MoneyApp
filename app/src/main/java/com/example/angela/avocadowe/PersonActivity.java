@@ -2,6 +2,7 @@ package com.example.angela.avocadowe;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -29,6 +30,7 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
     private ArrayAdapter<Owe> oweAdapter;
     private Person currentPerson;
     private Button addAmountButton;
+    private FloatingActionButton addAmountFloatingActionButton;
     private ArrayList<Person> personList;
     private int currentPersonPos;
     public static final String SEND_KEY = "key2";
@@ -55,9 +57,7 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    private void setOnClickListeners() {
-        addAmountButton.setOnClickListener(this);
-    }
+    private void setOnClickListeners() {addAmountFloatingActionButton.setOnClickListener(this);}
 
     private void adaptArray() {
         oweAdapter = new ArrayAdapter<Owe>(this, R.layout.list_item_single_amount, oweList);
@@ -202,15 +202,15 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void wiringWidgets() {
-        nameTextView = (TextView) findViewById(R.id.textView_name);
-        oweListView = (ListView) findViewById(R.id.listView_owes);
-        addAmountButton = (Button) findViewById(R.id.button_new_amount);
+        nameTextView = findViewById(R.id.textView_name);
+        oweListView = findViewById(R.id.listView_owes);
+        addAmountFloatingActionButton = findViewById(R.id.floatingActionButton_new_amount);
     }
 
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
-            case R.id.button_new_amount:
+            case R.id.floatingActionButton_new_amount:
                 addAmount();
                 break;
             default:

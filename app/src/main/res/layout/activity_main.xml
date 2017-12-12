@@ -7,36 +7,42 @@
     android:layout_height="match_parent"
     tools:context="com.example.angela.moneyapp.com.example.angela.avocadowe.MainActivity">
 
-    <ListView
-        android:id="@+id/listView_people"
-        android:layout_width="325dp"
-        android:layout_height="325dp"
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.497" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/button_add_person"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="@color/colorAccent"
-        android:text="Add Person"
-        android:textAlignment="center"
-        android:textColor="@android:color/background_light"
-        android:fontFamily="@font/bebas_neue_regular"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listView_people" />
+        <ListView
+            android:id="@+id/listView_people"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            tools:layout_editor_absoluteX="138dp"
+            tools:layout_editor_absoluteY="232dp">
+
+        </ListView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floatingActionButton_add_person"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:src="@drawable/ic_person_add_white_24dp"
+            app:fabSize="normal"
+            app:layout_anchor="@+id/listView_people"
+            app:layout_anchorGravity="right|bottom"
+            app:rippleColor="@color/colorPrimary"
+            app:useCompatPadding="true"
+            tools:layout_editor_absoluteX="214dp"
+            tools:layout_editor_absoluteY="235dp" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
 </android.support.constraint.ConstraintLayout>

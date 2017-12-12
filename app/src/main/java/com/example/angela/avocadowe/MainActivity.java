@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<Person> peopleList;
     private ArrayAdapter<Person> peopleAdapter;
     private ListView peopleListView;
-    private Button addPersonButton;
+    private FloatingActionButton addPersonFloatingActionButton;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor preferenceEditor;
     private Type type;
@@ -134,15 +135,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    private void setOnClickListeners() {
-        addPersonButton.setOnClickListener(this);
-    }
+    private void setOnClickListeners() {addPersonFloatingActionButton.setOnClickListener(this);}
 
     private void wiringWidgets() {
         //background = (ConstraintLayout) findViewById(R.id.layout_main_background);
         //background.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        peopleListView = (ListView) findViewById(R.id.listView_people);
-        addPersonButton = (Button) findViewById(R.id.button_add_person);
+        peopleListView = findViewById(R.id.listView_people);
+        addPersonFloatingActionButton = findViewById(R.id.floatingActionButton_add_person);
     }
 
     private void addPerson() {
@@ -151,12 +150,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final AlertDialog dialog = addPersonBuilder.create();
 
         //Wiring the dialog widgets
-        final EditText etName = (EditText) addPersonView.findViewById(R.id.editText_pop_up_add_name);
-        final EditText etAmountOwed = (EditText) addPersonView.findViewById(R.id.editText_pop_up_add_person_amount_owed);
-        final EditText etDate = (EditText) addPersonView.findViewById(R.id.editText_pop_up_add_person_date);
-        final EditText etDescription = (EditText) addPersonView.findViewById(R.id.editText_pop_up_add_person_description);
-        Button submit = (Button) addPersonView.findViewById(R.id.button_pop_up_add_person_submit);
-        Button cancel = (Button) addPersonView.findViewById(R.id.button_pop_up_add_person_cancel);
+        final EditText etName = addPersonView.findViewById(R.id.editText_pop_up_add_name);
+        final EditText etAmountOwed = addPersonView.findViewById(R.id.editText_pop_up_add_person_amount_owed);
+        final EditText etDate = addPersonView.findViewById(R.id.editText_pop_up_add_person_date);
+        final EditText etDescription = addPersonView.findViewById(R.id.editText_pop_up_add_person_description);
+        Button submit = addPersonView.findViewById(R.id.button_pop_up_add_person_submit);
+        Button cancel = addPersonView.findViewById(R.id.button_pop_up_add_person_cancel);
 
         /**
          * When submitted, we'll convert the data of our widget variables to be applicable for the 'Person' class
@@ -222,7 +221,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch(view.getId()){
-            case R.id.button_add_person: //TODO: we'll change this to the first slot on list view
+            case R.id.floatingActionButton_add_person:
                 addPerson();
                 break;
             default:
@@ -245,7 +244,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 /*
 Ideas
-- Possibly make a fake Person object as the first item in the array list to use as an add Person button
 - Would have to identify the position and the difference between this and others when writing intents to change screens
 
 - To do only if there is extra time.
