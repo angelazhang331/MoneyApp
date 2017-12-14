@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -27,7 +28,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    //private ConstraintLayout background;
+    private ConstraintLayout background;
     private ArrayList<Person> peopleList;
     private ArrayAdapter<Person> peopleAdapter;
     private ListView peopleListView;
@@ -69,24 +70,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //the things not null
             }
         }
-
         Intent get = getIntent();
         if (get.getParcelableArrayListExtra(PersonActivity.SEND_KEY) != null) {
-
-            Toast.makeText(this, "It is not null", Toast.LENGTH_SHORT).show();
+            //It is not null
             peopleList = get.getParcelableArrayListExtra(PersonActivity.SEND_KEY);
             json =  gson.toJson(peopleList);
             preferenceEditor.putString("MyArray", json);
             preferenceEditor.apply();
         }
         else {
-            Toast.makeText(this, "It is null", Toast.LENGTH_SHORT).show();
+            //It is null
         }
-
         wiringWidgets();
         setOnClickListeners();
         adaptingArrays();
-
     }
 
     private void adaptingArrays() {
@@ -137,8 +134,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void setOnClickListeners() {addPersonFloatingActionButton.setOnClickListener(this);}
 
     private void wiringWidgets() {
-        //background = (ConstraintLayout) findViewById(R.id.layout_main_background);
-        //background.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        background = (ConstraintLayout) findViewById(R.id.layout_main_background);
+        background.setBackgroundColor(getResources().getColor(R.color.colorBackground));
         peopleListView = findViewById(R.id.listView_people);
         addPersonFloatingActionButton = findViewById(R.id.floatingActionButton_add_person);
     }

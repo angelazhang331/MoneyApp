@@ -80,7 +80,7 @@ public class Owe implements Parcelable {
 
     @Override
     public String toString() {
-        return " " + date + " - " + amount;
+        return " " + date + " - $" + (amount-amountPaid);
     }
 
     protected Owe(Parcel in) {

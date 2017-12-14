@@ -2,6 +2,8 @@ package com.example.angela.avocadowe;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,8 +17,6 @@ import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.support.design.widget.FloatingActionButton;
-
 
 import java.util.ArrayList;
 
@@ -25,6 +25,7 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
     private String personName;
     private TextView nameTextView;
     private ListView oweListView;
+    private ConstraintLayout background;
     private ArrayList<Owe> oweList;
     private ArrayAdapter<Owe> oweAdapter;
     private Person currentPerson;
@@ -201,6 +202,8 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void wiringWidgets() {
+        background = (ConstraintLayout) findViewById(R.id.layout_cool_background);
+        background.setBackgroundColor(getResources().getColor(R.color.colorBackground));
         nameTextView = findViewById(R.id.textView_name);
         oweListView = findViewById(R.id.listView_owes);
         addAmountFloatingActionButton = findViewById(R.id.floatingActionButton_new_amount);

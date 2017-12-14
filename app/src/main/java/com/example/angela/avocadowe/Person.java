@@ -71,7 +71,7 @@ public class Person implements Parcelable, Comparable<Person> {
 
     @Override
     public String toString() {
-        return name;
+        return "   " + name;
     }
 
 
