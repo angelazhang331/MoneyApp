@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
     private ArrayAdapter<Owe> oweAdapter;
     private Person currentPerson;
     private Button addAmountButton;
+    private ImageButton helpPageButton;
     private FloatingActionButton addAmountFloatingActionButton;
     private ArrayList<Person> personList;
     private int currentPersonPos;
@@ -57,7 +59,10 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    private void setOnClickListeners() {addAmountFloatingActionButton.setOnClickListener(this);}
+    private void setOnClickListeners() {
+        addAmountFloatingActionButton.setOnClickListener(this);
+        helpPageButton.setOnClickListener(this);
+    }
 
     private void adaptArray() {
         oweAdapter = new ArrayAdapter<Owe>(this, R.layout.list_item_single_amount, oweList);
@@ -198,7 +203,6 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
 
         dialog.setView(viewOweView);
         dialog.show();
-        dialog.getWindow().setLayout(1000, 990);
     }
 
     private void wiringWidgets() {
@@ -207,6 +211,7 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
         nameTextView = findViewById(R.id.textView_name);
         oweListView = findViewById(R.id.listView_owes);
         addAmountFloatingActionButton = findViewById(R.id.floatingActionButton_new_amount);
+        helpPageButton = findViewById(R.id.imageButton_help2);
     }
 
     @Override
@@ -214,6 +219,9 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
         switch(view.getId()) {
             case R.id.floatingActionButton_new_amount:
                 addAmount();
+                break;
+            case R.id.imageButton_help2:
+                helpPage();
                 break;
             default:
                 break;
@@ -306,6 +314,14 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
 
         dialog.setView(addAmountView);
         dialog.show();
-        dialog.getWindow().setLayout(1100, 1050);
+    }
+
+    private void helpPage() {
+        AlertDialog.Builder helpPageBuilder = new AlertDialog.Builder(PersonActivity.this);
+        View helpPageView = getLayoutInflater().inflate(R.layout.help_page, null);
+        final AlertDialog dialog = helpPageBuilder.create();
+
+        dialog.setView(helpPageView);
+        dialog.show();
     }
 }

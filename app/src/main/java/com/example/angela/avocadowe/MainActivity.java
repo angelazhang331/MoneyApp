@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayAdapter<Person> peopleAdapter;
     private ListView peopleListView;
     private FloatingActionButton addPersonFloatingActionButton;
+    private ImageButton helpButton;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor preferenceEditor;
     private Type type;
@@ -131,13 +133,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    private void setOnClickListeners() {addPersonFloatingActionButton.setOnClickListener(this);}
+    private void setOnClickListeners() {
+        addPersonFloatingActionButton.setOnClickListener(this);
+        helpButton.setOnClickListener(this);
+    }
 
     private void wiringWidgets() {
         background = (ConstraintLayout) findViewById(R.id.layout_main_background);
         background.setBackgroundColor(getResources().getColor(R.color.colorBackground));
         peopleListView = findViewById(R.id.listView_people);
         addPersonFloatingActionButton = findViewById(R.id.floatingActionButton_add_person);
+        helpButton = findViewById(R.id.imageButton_help);
     }
 
     private void addPerson() {
@@ -220,31 +226,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.floatingActionButton_add_person:
                 addPerson();
                 break;
+            case R.id.imageButton_help:
+                helpPage();
             default:
                 break;
         }
     }
 
+    private void helpPage() {
+        AlertDialog.Builder helpPageBuilder = new AlertDialog.Builder(MainActivity.this);
+        View helpPageView = getLayoutInflater().inflate(R.layout.help_page, null);
+        final AlertDialog dialog = helpPageBuilder.create();
+
+        dialog.setView(helpPageView);
+        dialog.show();
+    }
 
 
     private void sortByName(){
         Collections.sort(peopleList);
         peopleAdapter.notifyDataSetChanged();
     }
-
-    private void sortByOweAmount(){
-
-    }
 }
-
-
-/*
-Ideas
-- Would have to identify the position and the difference between this and others when writing intents to change screens
-
-- To do only if there is extra time.
- */
-
 /*
 
 TODO: have the textview for each listview item change color to show whether it was paid or not. Update the array for whether or not the thing was paid and the amount paid
