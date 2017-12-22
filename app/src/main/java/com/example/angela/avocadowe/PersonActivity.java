@@ -1,5 +1,6 @@
 package com.example.angela.avocadowe;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -19,6 +20,15 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
+import com.paypal.android.sdk.payments.PaymentConfirmation;
+
+import org.json.JSONException;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class PersonActivity extends AppCompatActivity implements View.OnClickListener {
@@ -26,16 +36,19 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
     private String personName;
     private TextView nameTextView;
     private ListView oweListView;
-    private ConstraintLayout background;
     private ArrayList<Owe> oweList;
     private ArrayAdapter<Owe> oweAdapter;
     private Person currentPerson;
-    private Button addAmountButton;
     private ImageButton helpPageButton;
     private FloatingActionButton addAmountFloatingActionButton;
     private ArrayList<Person> personList;
-    private int currentPersonPos;
+    private int currentPersonPos, amountToPay;
     public static final String SEND_KEY = "key2";
+    public static final String PAYPAL_CLIENT_ID = "AWDifm2bTvFUvwMR_A5z_C335nOmAfz9yUERxZEytDtNjXtfCKPG6zi8x582wMIzQD5LYufOeXDR49a8"; //Placeholder client
+    public static final int PAYPAL_REQUEST_CODE = 123; //PayPal request code for onActivityResult method
+    private static PayPalConfiguration config = new PayPalConfiguration()
+            .environment(PayPalConfiguration.ENVIRONMENT_NO_NETWORK)
+            .clientId(PAYPAL_CLIENT_ID);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +67,12 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
 
         oweList = currentPerson.getOweList();
 
-
         adaptArray();
 
+        //start PayPal service
+        Intent intent = new Intent(this, PayPalService.class);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+        startService(intent);
     }
 
     private void setOnClickListeners() {
@@ -142,7 +158,7 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onClick(View view) {
                 if (!amountToPayEditText.getText().toString().isEmpty()) {
-                    int amountToPay = Integer.parseInt(amountToPayEditText.getText().toString());
+                    amountToPay = Integer.parseInt(amountToPayEditText.getText().toString());
                     if(currentOwe.getAmount() < amountToPay + currentOwe.getAmountPaid()){
 
                         Toast.makeText(PersonActivity.this, "Entered value too large", Toast.LENGTH_SHORT).show();
@@ -182,6 +198,7 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
 
                             Log.d("TAG", "viewOwe: " + currentOwe.getAmountPaid());
                         }
+                        getPayment();
 
                         amountPaidTextView.setText("" + currentOwe.getAmountPaid());
 
@@ -205,9 +222,44 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
         dialog.show();
     }
 
+    private void getPayment() { //new intent configuration to start PayPal
+        PayPalPayment payment = new PayPalPayment(new BigDecimal(String.valueOf(amountToPay)), "USD", "AvocadOwe Transferification",
+                PayPalPayment.PAYMENT_INTENT_SALE);
+        Intent intent = new Intent(this, PaymentActivity.class);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+        intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
+        startActivityForResult(intent, PAYPAL_REQUEST_CODE); //invokes onActivityResult
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //If the result is from PayPal
+        if (requestCode == PAYPAL_REQUEST_CODE) {
+
+            //If the result is OK i.e. user has not canceled the payment
+            if (resultCode == Activity.RESULT_OK) {
+                //Getting the payment confirmation
+                PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+
+                //if confirmation is not null
+                if (confirm != null) {
+                    try {
+                        //Getting the payment details
+                        String paymentDetails = confirm.toJSONObject().toString(4);
+                        Log.i("paymentExample", paymentDetails);
+                    } catch (JSONException e) {
+                        Log.e("paymentExample", "an extremely unlikely failure occurred: ", e);
+                    }
+                }
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Log.i("paymentExample", "The user canceled.");
+            } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
+                Log.i("paymentExample", "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
+            }
+        }
+    }
+
     private void wiringWidgets() {
-        background = (ConstraintLayout) findViewById(R.id.layout_cool_background);
-        background.setBackgroundColor(getResources().getColor(R.color.colorBackground));
         nameTextView = findViewById(R.id.textView_name);
         oweListView = findViewById(R.id.listView_owes);
         addAmountFloatingActionButton = findViewById(R.id.floatingActionButton_new_amount);
@@ -272,11 +324,6 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
                             personList.add(currentPersonPos, currentPerson);
                             sort();
 
-//                            json =  gson.toJson(oweList);
-//                            preferenceEditor.putString("MyOweArray", json);
-//                            preferenceEditor.apply();
-
-
                             dialog.dismiss();
                         }
                     }
@@ -287,10 +334,6 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
                             personList.remove(currentPersonPos);
                             personList.add(currentPersonPos, currentPerson);
                             sort();
-
-//                            json =  gson.toJson(oweList);
-//                            preferenceEditor.putString("MyOweArray", json);
-//                            preferenceEditor.apply();
 
                             dialog.dismiss();
                         }
@@ -323,5 +366,11 @@ public class PersonActivity extends AppCompatActivity implements View.OnClickLis
 
         dialog.setView(helpPageView);
         dialog.show();
+    }
+
+    @Override
+    public void onDestroy() {
+        stopService(new Intent(this, PayPalService.class)); //destroy paypal service when closing the app
+        super.onDestroy();
     }
 }

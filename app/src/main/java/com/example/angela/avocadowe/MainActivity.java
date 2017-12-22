@@ -29,7 +29,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private ConstraintLayout background;
     private ArrayList<Person> peopleList;
     private ArrayAdapter<Person> peopleAdapter;
     private ListView peopleListView;
@@ -139,8 +138,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void wiringWidgets() {
-        background = (ConstraintLayout) findViewById(R.id.layout_main_background);
-        background.setBackgroundColor(getResources().getColor(R.color.colorBackground));
         peopleListView = findViewById(R.id.listView_people);
         addPersonFloatingActionButton = findViewById(R.id.floatingActionButton_add_person);
         helpButton = findViewById(R.id.imageButton_help);
@@ -248,20 +245,3 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         peopleAdapter.notifyDataSetChanged();
     }
 }
-/*
-
-TODO: have the textview for each listview item change color to show whether it was paid or not. Update the array for whether or not the thing was paid and the amount paid
-
-TODO transfer the extra pay to the next owe?
-
- Change person name font
- change button colors for accent
-
- change button styles
- change font size for view owe
-
- format textview list item size
- pictures?
-
-
- */
