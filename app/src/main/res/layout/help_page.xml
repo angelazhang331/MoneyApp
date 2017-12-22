@@ -17,7 +17,7 @@
         android:fontFamily="@font/bebas_neue_regular"
         android:gravity="center_vertical"
         android:maxWidth="200dp"
-        android:text="This is an app that keeps track of how much money people owe you!\n
+        android:text="This is an app that keeps track of how much money you owe people!\n
         You can add new people and amounts!\nCreate a person to get started!"
         android:textAlignment="center"
         android:textSize="24sp"
